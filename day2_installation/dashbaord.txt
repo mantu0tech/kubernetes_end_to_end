@@ -1,0 +1,25 @@
+to install the dashbaord in your kind 
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
+
+kubectl create serviceaccount admin-user -n kubernetes-dashboard
+
+
+
+kubectl create clusterrolebinding admin-user \
+  --clusterrole=cluster-admin \
+  --serviceaccount=kubernetes-dashboard:admin-user
+
+
+  kubectl -n kubernetes-dashboard create token admin-user
+
+
+  kubectl proxy
+
+  paster your ip and then 
+
+  http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+  access it using these 
+  
