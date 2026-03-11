@@ -134,3 +134,20 @@ kubectl is the **most used** because:
 ---
 
 ## End of README
+
+https://kind.sigs.k8s.io/docs/user/quick-start/
+
+for creating the config.yml file 
+
+kubectl cluster-info --context kind-mycluster
+
+to chekc its info 
+
+kubectl get nodes 
+here you can check your marter and node 
+
+
+https://github.com/LondheShubham153/kubestarter
+
+refer these for more information 
+

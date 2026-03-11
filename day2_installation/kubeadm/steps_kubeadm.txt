@@ -1,0 +1,11 @@
+we need to server of ubuntu EC2 
+
+master >>t2 medium >>ubuntu 
+worker nodes >>t2.medium >>ubuntu 
+
+6443 is the port no for worker nodes 
+
+now connet both the serve r
+
+add 6443 in your node 
+

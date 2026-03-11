@@ -1,0 +1,31 @@
+
+
+ kubectl  apply -f namespace.yml
+
+kubectl get ns 
+
+ kubectl  apply -f pod.yml
+
+ kubectl get pods 
+
+ kubectl get pods -n nginx 
+
+to get inside your container in same way to get inside your pods 
+
+
+kubectl exec -it pod/nginx-pod -n nginx -- bash
+
+now you will be insde your pods 
+
+now do 
+>curl 127.0.0.1
+
+kubectl describe pod/nginx-pod -n nginx 
+but we are going to access it using the services 
+
+
+kubectl apply -f deploy.yml
+
+kubectl get deployment -n nginx 
+
+kubectl get pods -n nginx 

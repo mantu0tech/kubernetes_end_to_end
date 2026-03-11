@@ -1,0 +1,14 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx-pod
+  namespace: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+      - containerPort: 80
+
+#https://kubernetes.io/docs/concepts/workloads/pods/
+#refer these links for more detailes 

@@ -87,6 +87,5 @@ to access or go inside your pods you can access it
 using the 
 kubectl exec -it -n eks-sample-app eks-sample-linux-deployment-7d4648f987-k4dgx  --bin/sh
 
-
 these will take you inside your pods
 
