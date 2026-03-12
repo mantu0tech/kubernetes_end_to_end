@@ -29,3 +29,26 @@ kubectl apply -f deploy.yml
 kubectl get deployment -n nginx 
 
 kubectl get pods -n nginx 
+
+
+kubectl apply -f job.yml 
+
+kubectl get pods -n nginx
+
+kubectl logs pod/demo-job-8bf26 -n nginx
+
+you job will start run and stop 
+here i will do some task and completed 
+
+cron job 
+our job is ready now we want to shedule it  
+for shedulling we need cronjob 
+
+kubectl apply -f cronjob.yml
+kubectl get cronjob -n nginx
+
+kubectl get pods -n nginx 
+
+kubectl logs pod/minute-backup-29554882-frlvv -n nginx
+
+kubectl delete  -f cronjob.yml

@@ -88,3 +88,15 @@ Labels are key-value tags attached to Kubernetes objects like pods, services, or
 
 Selectors:
 Selectors are used to find or select resources based on labels. Kubernetes services or deployments use selectors to match and manage the correct pods.
+
+pods state 
+Pending
+Running
+Succeeded
+Failed >>All containers have terminated, and at least one failed.
+Unknown >>The Pod state cannot be determined.
+CrashLoopBackOff – Container keeps crashing and restarting.
+
+ImagePullBackOff – Kubernetes cannot pull the container image.
+
+ContainerCreating – Container is being created.

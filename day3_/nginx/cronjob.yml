@@ -1,0 +1,21 @@
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: minute-backup
+  namespace: nginx
+
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: app-backup
+          labels:
+            app: minute-back
+        spec:
+         containers:
+         - name: backup-continner
+           image: busybox
+           command: [ "sh", "-c", "echo Hello mantasha && sleep "]
+         restartPolicy: OnFailure
