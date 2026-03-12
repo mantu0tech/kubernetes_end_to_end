@@ -1,25 +1,213 @@
-to install the dashbaord in your kind 
+---
 
+# 1️⃣ Allow Port 8001 on the Server
+
+In your **AWS Security Group**, add an inbound rule:
+
+```
+Type: Custom TCP
+Port: 8001
+Source: 0.0.0.0/0
+```
+
+This is needed for **kubectl proxy access**.
+
+---
+
+# 2️⃣ Deploy Kubernetes Dashboard
+
+Run on your EC2 server:
+
+```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+```
 
+Verify dashboard pods:
 
+```bash
+kubectl get pods -n kubernetes-dashboard
+```
+
+You should see:
+
+```
+kubernetes-dashboard-xxxxx
+dashboard-metrics-scraper-xxxxx
+```
+
+---
+
+# 3️⃣ Create Admin Service Account
+
+```bash
 kubectl create serviceaccount admin-user -n kubernetes-dashboard
+```
 
+---
 
+# 4️⃣ Give Admin Permissions
 
+```bash
 kubectl create clusterrolebinding admin-user \
   --clusterrole=cluster-admin \
   --serviceaccount=kubernetes-dashboard:admin-user
+```
 
+---
 
-  kubectl -n kubernetes-dashboard create token admin-user
+# 5️⃣ Generate Login Token
 
+```bash
+kubectl -n kubernetes-dashboard create token admin-user
+```
 
-  kubectl proxy
+Copy this **token**.
+You will use it to log into the dashboard.
 
-  paster your ip and then 
+---
 
-  http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+# 6️⃣ Change Dashboard Service to NodePort
 
-  access it using these 
-  
+Edit the service:
+
+```bash
+kubectl edit svc kubernetes-dashboard -n kubernetes-dashboard
+```
+
+Find:
+
+```
+type: ClusterIP
+```
+
+Change it to:
+
+```
+type: NodePort
+```
+
+Save and exit.
+
+---
+
+# 7️⃣ Verify the Service
+
+```bash
+kubectl get svc -n kubernetes-dashboard
+```
+
+Example output:
+
+```
+kubernetes-dashboard   NodePort   10.xx.xx.xx   <none>   443:32145/TCP
+```
+
+---
+
+# 8️⃣ Verify Cluster Nodes
+
+```bash
+kubectl get nodes -o wide
+```
+
+Copy your **EC2 public IP**.
+
+Example:
+
+```
+13.218.229.32
+```
+
+---
+
+# 9️⃣ Run Kubernetes Proxy (Background)
+
+Run this on the server:
+
+```bash
+kubectl proxy --address='0.0.0.0' --accept-hosts='.*' &
+```
+
+Now the dashboard can be accessed via proxy.
+
+---
+
+# 🔟 Access Dashboard via Proxy
+
+Open in browser:
+
+```
+http://13.218.229.32:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+```
+
+⚠️ Dashboard login may be disabled because it requires **HTTPS or localhost**.
+
+---
+
+# 1️⃣1️⃣ Enable Secure Access (Correct Way)
+
+Run **port-forward** on the server:
+
+```bash
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard 10443:443
+```
+
+Leave this terminal running.
+
+---
+
+# 1️⃣2️⃣ Create SSH Tunnel from Your Local Machine
+
+Open a **new terminal on your local computer** and run:
+
+```bash
+ssh -i "jenkins.pem" -L 10443:localhost:10443 ubuntu@ec2-13-218-229-32.compute-1.amazonaws.com
+```
+
+This securely forwards the dashboard to your **local machine**.
+
+---
+
+# 1️⃣3️⃣ Open Dashboard in Browser
+
+Open:
+
+```
+https://localhost:10443/#/login
+```
+
+You will see a browser warning because of a self-signed certificate.
+
+Click:
+
+```
+Advanced → Proceed
+```
+
+---
+
+# 1️⃣4️⃣ Login to Dashboard
+
+Generate token if you haven't already:
+
+```bash
+kubectl -n kubernetes-dashboard create token admin-user
+```
+
+Paste the token into the login page and click **Sign In**.
+
+---
+
+# 🎉 Done
+
+You now have access to the **Kubernetes Dashboard running on your KIND cluster on Amazon Web Services.
+
+---
+
+✅ Your flow was mostly correct — the **main fixes were**:
+
+* Correct order of steps
+* Proper explanation of **NodePort vs Proxy vs Port-Forward**
+* Correct SSH tunnel usage
+* Avoiding unnecessary commands
+
