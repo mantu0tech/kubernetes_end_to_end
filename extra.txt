@@ -1,0 +1,18 @@
+kubectl get pods -n kube-system
+
+kube-apiserver
+kube-scheduler
+kube-controller-manager
+etcd
+
+cd /etc/kubernetes/manifests/
+ls
+
+You’ll see YAML files for:
+
+API server
+Scheduler
+Controller manager
+etcd
+
+kubectl cluster-info

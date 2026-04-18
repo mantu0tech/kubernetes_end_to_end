@@ -51,3 +51,6 @@ kubectl config current-context
     4  kubectl config get-clusters
     5    kubectl config get-contexts
     6  kubectl config view
+
+
+    
